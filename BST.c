@@ -229,7 +229,16 @@ void main()
             break;
         case 6:
             line();
+            printf("\nAlright there is your final result...\n\n");
+            printf("Preorder : ");
+            preorder(root);
             printf("\n");
+            printf("Postorder : ");
+            postorder(root);
+            printf("\n");
+            printf("Inorder : ");
+            inorder(root);
+            printf("\n\n");
             printf("Thanks for using! Have a great day :)");
             printf("\n");
             line();
