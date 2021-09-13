@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "line.h"
 
+static int n = 0;
 static int height = 0;
 
 struct node
@@ -15,6 +16,7 @@ struct node *createNode(int key)
     tmp = (struct node *)malloc(sizeof(struct node));
     tmp->data = key;
     tmp->right = tmp->left = NULL;
+    n++;
     return tmp;
 }
 struct node *insertNode(struct node *root, int key)
@@ -23,10 +25,14 @@ struct node *insertNode(struct node *root, int key)
         return createNode(key);
 
     if (key < root->data)
+    {
         root->left = insertNode(root->left, key);
+    }
 
     else if (key > root->data)
+    {
         root->right = insertNode(root->right, key);
+    }
 
     return root;
 }
@@ -138,6 +144,22 @@ int searchNode(struct node *root, int key)
         }
     }
 }
+int BSTheight(struct node *root)
+{
+    int left, right = 0;
+    if (root == NULL)
+        return 0;
+    else
+    {
+        left = BSTheight(root->left);
+        right = BSTheight(root->right);
+
+        if (left > right)
+            return left + 1;
+        else
+            return right + 1;
+    }
+}
 void main()
 {
     int flag, data, s, del, search;
@@ -155,21 +177,22 @@ void main()
             do
             {
                 line();
-                printf("Enter data : ");
+                printf("\nEnter data : ");
                 scanf("%d", &data);
                 line();
                 root = insertNode(root, data);
                 printf("\nPreOrder : ");
                 preorder(root);
-                printf("\n");
                 printf("\nPostOrder : ");
                 postorder(root);
-                printf("\n");
                 printf("\nInOrder : ");
                 inorder(root);
+                printf("\n\nNumber of nodes = %d", n);
+                int height1 = BSTheight(root);
+                printf("\nHeight of BST = %d", height1 - 1);
                 printf("\n");
                 line();
-                printf("Want to insert more data? : ");
+                printf("\nWant to insert more data? : ");
                 getchar();
                 scanf("%c", &ch);
             } while (ch == 'y' || ch == 'Y');
@@ -179,50 +202,68 @@ void main()
             do
             {
                 line();
-                printf("Enter the data you want to delete : ");
+                printf("\nEnter the data you want to delete : ");
                 scanf("%d", &del);
-                deleteNode(root, del);
+                line();
+                int f = searchNode(root, del);
+                if (f == 1)
+                {
+                    deleteNode(root, del);
+                    n--;
+                }
+                else
+                {
+                    line();
+                    printf("\nValue not found in this BST which you wanted to delete.\n");
+                    line();
+                    printf("\n");
+                }
                 printf("\nPreOrder : ");
                 preorder(root);
-                printf("\n");
                 printf("\nPostOrder : ");
                 postorder(root);
-                printf("\n");
                 printf("\nInOrder : ");
                 inorder(root);
+                printf("\n\nNumber of nodes = %d", n);
+                int height1 = BSTheight(root);
+                printf("\n\nHeight of BST = %d", height1 - 1);
                 printf("\n");
                 line();
-                printf("Want to delete more data? : ");
+                printf("\nWant to delete more data? : ");
                 getchar();
                 scanf("%c", &ch);
             } while (ch == 'y' || ch == 'Y');
             break;
         case 3:
             line();
-            printf("Minimum value in this BST = %d\n", minValue_print(root));
+            printf("\nMinimum value in this BST = %d\n", minValue_print(root));
             break;
         case 4:
             line();
-            printf("Maximum value in this BST = %d\n", maxValue_print(root));
+            printf("\nMaximum value in this BST = %d\n", maxValue_print(root));
             break;
         case 5:
             do
             {
                 line();
-                printf("Search for the data : ");
+                printf("\nSearch for the data : ");
                 scanf("%d", &search);
                 flag = searchNode(root, search);
                 if (flag == 1)
                 {
+                    line();
+                    printf("\n");
                     printf("Value found at height %d", height);
                 }
                 else
                 {
+                    line();
+                    printf("\n");
                     printf("Value not found");
                 }
                 printf("\n");
                 line();
-                printf("Want to search again? : ");
+                printf("\nWant to search again? : ");
                 getchar();
                 scanf("%c", &ch);
             } while (ch == 'y' || ch == 'Y');
@@ -230,14 +271,15 @@ void main()
         case 6:
             line();
             printf("\nAlright there is your final result...\n\n");
-            printf("Preorder : ");
+            printf("\nPreOrder : ");
             preorder(root);
-            printf("\n");
-            printf("Postorder : ");
+            printf("\nPostOrder : ");
             postorder(root);
-            printf("\n");
-            printf("Inorder : ");
+            printf("\nInOrder : ");
             inorder(root);
+            printf("\n\nNumber of nodes = %d", n);
+            int height1 = BSTheight(root);
+            printf("\n\nHeight of BST = %d", height1 - 1);
             printf("\n\n");
             printf("Thanks for using! Have a great day :)");
             printf("\n");
@@ -246,7 +288,7 @@ void main()
             break;
         default:
             line();
-            printf("Inavlid entry!");
+            printf("\nInavlid entry!");
             printf("\n");
             break;
         }
